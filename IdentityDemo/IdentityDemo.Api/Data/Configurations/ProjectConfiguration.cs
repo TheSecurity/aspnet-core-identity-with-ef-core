@@ -1,4 +1,5 @@
-﻿using IdentityDemo.Api.Data.Entities;
+﻿using IdentityDemo.Api.Common.Constants;
+using IdentityDemo.Api.Data.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -10,9 +11,10 @@ public class ProjectConfiguration : IEntityTypeConfiguration<Project>
     {
         builder.Property(p => p.Name)
             .IsRequired()
-            .HasMaxLength(100);
+            .HasMaxLength(FieldLengths.Project.Name);
+            
         builder.Property(p => p.Description)
-            .HasMaxLength(500);
+            .HasMaxLength(FieldLengths.Project.Description);
 
         builder.HasMany(p => p.Members)
                .WithOne(up => up.Project)

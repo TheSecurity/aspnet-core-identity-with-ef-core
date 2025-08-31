@@ -1,3 +1,4 @@
+using IdentityDemo.Api.Common.Constants;
 using System.ComponentModel.DataAnnotations;
 
 namespace IdentityDemo.Api.Models;
@@ -5,9 +6,9 @@ namespace IdentityDemo.Api.Models;
 public class CreateProjectRequestModel
 {
     [Required]
-    [MaxLength(100)]
+    [MaxLength(FieldLengths.Project.Name)]
     public string Name { get; set; } = null!;
 
-    [MaxLength(500)]
+    [MaxLength(FieldLengths.Project.Description)]
     public string? Description { get; set; }
 }
