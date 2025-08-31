@@ -54,6 +54,18 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
+// Register exception handling and problem details
+builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
+builder.Services.AddProblemDetails(options =>
+{
+    options.CustomizeProblemDetails = context =>
+    {
+        context.ProblemDetails.Instance = $"{context.HttpContext.Request.Method} {context.HttpContext.Request.Path}";
+        context.ProblemDetails.Extensions.TryAdd("requestId", context.HttpContext.TraceIdentifier);
+        context.ProblemDetails.Extensions.TryAdd("traceId", System.Diagnostics.Activity.Current?.Id);
+    };
+});
+
 // Register services
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<IJwtService, JwtService>();
@@ -64,6 +76,9 @@ builder.Services.AddControllers();
 builder.Services.AddOpenApi();
 
 var app = builder.Build();
+
+app.UseExceptionHandler();
+app.UseStatusCodePages();
 
 if (app.Environment.IsDevelopment())
 {
