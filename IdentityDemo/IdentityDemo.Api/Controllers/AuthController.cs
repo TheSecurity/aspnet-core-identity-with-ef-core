@@ -1,14 +1,13 @@
 ﻿using IdentityDemo.Api.Data.Entities;
 using IdentityDemo.Api.Models;
 using IdentityDemo.Api.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace IdentityDemo.Api.Controllers;
 
-[Route("api/[controller]")]
-[ApiController]
-public class AuthController : ControllerBase
+public class AuthController : ApiControllerBase
 {
     private readonly SignInManager<User> _signInManager;
     private readonly UserManager<User> _userManager;
@@ -21,6 +20,7 @@ public class AuthController : ControllerBase
         _jwtService = jwtService;
     }
 
+    [AllowAnonymous]
     [HttpPost("register")]
     public async Task<ActionResult> Register(RegisterRequestModel model)
     {
@@ -65,6 +65,7 @@ public class AuthController : ControllerBase
         return NoContent();
     }
 
+    [AllowAnonymous]
     [HttpPost("login")]
     public async Task<ActionResult<LoginResultModel>> Login(LoginRequestModel model)
     {
